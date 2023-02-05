@@ -76,6 +76,8 @@ MainStyle.AudioInput = styled.input`
   transform: translate(-50%, -50%);
 
   z-index: 5;
+
+  visibility: hidden;
 `;
 
 MainStyle.AudioController = styled.audio`
@@ -96,6 +98,13 @@ MainStyle.AudioController = styled.audio`
   }
 
   transition: opacity 0.2s ease;
+`;
+
+MainStyle.AlbumSliderWrapper = styled.div`
+  width: 400px;
+  height: 100%;
+
+  position: relative;
 `;
 
 MainStyle.AlbumCover = styled.img`

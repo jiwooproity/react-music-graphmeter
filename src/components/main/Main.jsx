@@ -3,6 +3,8 @@ import { MainStyle as CSS } from "style";
 
 import albumCover from "../../images/Imagine-Dragons-Night-Visions-album-cover-820.png";
 import radioactive from "../../music/Imagine Dragons-01-Radioactive.flac";
+import Background from "./Background";
+import Slider from "./Slider";
 
 let barHeight = 0;
 
@@ -269,12 +271,8 @@ const Main = () => {
 
   return (
     <CSS.Container>
-      <CSS.BackDropBackground />
-      <CSS.BackDropWallpaper src={albumCover} />
-      <CSS.AudioInput type="file" id="fileUpload" onChange={onAudioChange} hidden={true} />
-      <label htmlFor="fileUpload">
-        <CSS.AlbumCover id="album" src={albumCover} ref={imageRef} />
-      </label>
+      <Background image={albumCover} />
+      <Slider image={albumCover} onChange={onAudioChange} ref={imageRef} />
       <CSS.EffectCanvas id="effect" ref={effectRef} />
       <CSS.AudioController src={radioactive} id="audio" controls onPlay={onPlaying} />
       <CSS.VisualizerCanvas id="visualizer" ref={visualizerRef} align={true} />
