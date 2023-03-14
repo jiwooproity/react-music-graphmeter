@@ -205,6 +205,7 @@ const Main = () => {
       setAudioContext(audioContext);
       initDraw();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visualizerContext]);
 
   useEffect(() => {
