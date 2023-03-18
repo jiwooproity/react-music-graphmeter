@@ -93,9 +93,9 @@ MainStyle.AudioController = styled.audio`
 
   opacity: 0;
 
-  &:hover {
+  /* &:hover {
     opacity: 1;
-  }
+  } */
 
   transition: opacity 0.2s ease;
 `;
@@ -108,7 +108,7 @@ MainStyle.AlbumSliderWrapper = styled.div`
 `;
 
 MainStyle.AlbumCover = styled.img`
-  width: 400px;
+  width: 100%;
   height: 400px;
 
   display: block;
@@ -120,7 +120,7 @@ MainStyle.AlbumCover = styled.img`
   transform: translate(-50%, -50%);
 
   color: rgba(255, 255, 255, 0.8);
-  border: currentColor 0.1em solid;
+  border: rgba(255, 255, 255, 0.3) 0.1em solid;
   border-radius: 0.25em;
 
   object-fit: cover;
@@ -129,10 +129,29 @@ MainStyle.AlbumCover = styled.img`
 
   z-index: 3;
 
-  box-shadow: 0 0 1.1em rgba(255, 154, 96, 0.5);
+  /* box-shadow: 0 0 1.1em rgba(255, 154, 96, 0.5); */
   opacity: 0.9;
 
   transition: all 0.1s ease;
+`;
+
+MainStyle.YoutubeURLInput = styled.input`
+  width: 80%;
+  height: 50px;
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0px 15px;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.4);
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default MainStyle;

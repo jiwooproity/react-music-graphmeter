@@ -1,7 +1,7 @@
-import { Main } from "components";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
+import Main from "components/main/Main";
 
 const AppContainer = styled.div`
   width: 100%;
