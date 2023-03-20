@@ -93,9 +93,9 @@ MainStyle.AudioController = styled.audio`
 
   opacity: 0;
 
-  /* &:hover {
+  &:hover {
     opacity: 1;
-  } */
+  }
 
   transition: opacity 0.2s ease;
 `;
