@@ -40,6 +40,9 @@ const Main = () => {
   const [audioThumbail, setAudioThumbnail] = useState(albumCover);
 
   const initDraw = () => {
+    visualizerContext.clearRect(0, 0, WIDTH, HEIGHT);
+    visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
+
     r = 80;
     g = 20;
     b = 220;
@@ -96,7 +99,7 @@ const Main = () => {
       2400
     );
 
-    gradient.addColorStop(1, "rgba(159, 173, 211, 0.8)");
+    gradient.addColorStop(1, "rgba(46, 46, 111, 0.8)");
     gradient.addColorStop(0, "rgba(0, 0, 0, 0.02)");
 
     effectContext.fillStyle = gradient;
@@ -123,7 +126,7 @@ const Main = () => {
     for (let i = 0; i < INTERVAL; i++) {
       let num = i;
 
-      if (barHeight >= 225) {
+      if ((i >= 3 && i <= 7 && barHeight >= 205) || (i === 4 && barHeight >= 150)) {
         bigBars++;
       }
 
@@ -157,15 +160,15 @@ const Main = () => {
       visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
       visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
       // visualizerContext.fillStyle = "rgb(255, 255, 255)";
-      visualizerContext.fillRect(x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 1, barHeight);
-      visualizerContext2.fillRect(x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 1, barHeight);
+      visualizerContext.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
+      visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
 
       // 그림자
       visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
       visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
       // visualizerContext.fillStyle = "rgba(255, 255, 255, 0.1)";
-      visualizerContext.fillRect(x, HEIGHT / 2, WIDTH / INTERVAL - 1, barHeight);
-      visualizerContext2.fillRect(x, HEIGHT / 2, WIDTH / INTERVAL - 1, barHeight);
+      visualizerContext.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+      visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
 
       x = x + WIDTH / INTERVAL;
     }
@@ -257,11 +260,10 @@ const Main = () => {
     if (key === "Enter") {
       let audio = document.getElementById("audio");
       audio.pause();
-      requestAnimationFrame(visualizerDraw);
 
-      const { thumbnail } = await fetch(`http://localhost:8080/stream?url=${value}`).then((res) => res.json());
+      const { thumbnail } = await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/stream?url=${value}`).then((res) => res.json());
       setAudioThumbnail(thumbnail.url);
-      await fetch(`http://localhost:8080/play?url=${value}`)
+      await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/play?url=${value}`)
         .then((res) => res.blob())
         .then((data) => {
           var a = document.createElement("a");
