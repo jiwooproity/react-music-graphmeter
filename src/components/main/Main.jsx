@@ -126,7 +126,7 @@ const Main = () => {
     for (let i = 0; i < INTERVAL; i++) {
       let num = i;
 
-      if ((i >= 3 && i <= 7 && barHeight >= 205) || (i === 4 && barHeight >= 150)) {
+      if ((i >= 5 && i <= 7 && barHeight >= 210) || (i >= 3 && i <= 4 && barHeight >= 180)) {
         bigBars++;
       }
 
@@ -261,9 +261,9 @@ const Main = () => {
       let audio = document.getElementById("audio");
       audio.pause();
 
-      const { thumbnail } = await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/stream?url=${value}`).then((res) => res.json());
+      const { thumbnail } = await fetch(`http://localhost:8080/stream?url=${value}`).then((res) => res.json());
       setAudioThumbnail(thumbnail.url);
-      await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/play?url=${value}`)
+      await fetch(`http://localhost:8080/play?url=${value}`)
         .then((res) => res.blob())
         .then((data) => {
           var a = document.createElement("a");
