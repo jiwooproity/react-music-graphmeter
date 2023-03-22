@@ -23,9 +23,7 @@ let HEIGHT = 0;
 const INTERVAL = 128; // 128, 256
 const SAMPLES = 4096; // 4096, 1024, 512, 2048
 
-setInterval(() => {
-  rotate += 0.001;
-}, 1);
+let interval = null;
 
 const Main = () => {
   const visualizerRef = useRef();
@@ -58,7 +56,7 @@ const Main = () => {
     // visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
     const barWidth = (WIDTH - 600) / INTERVAL - 2;
     visualizerContext.clearRect(-WIDTH, -HEIGHT, WIDTH * 2, HEIGHT * 2);
-    analyser.getByteFrequencyData(freqArr);
+    // analyser.getByteFrequencyData(freqArr);
 
     for (let i = 0; i < INTERVAL; i++) {
       let num = i;
@@ -111,7 +109,7 @@ const Main = () => {
       // );
 
       visualizerContext.beginPath();
-      visualizerContext.roundRect(-barWidth / 2, 0, barWidth, barHeight, [25, 25, 25, 25]);
+      visualizerContext.roundRect(-barWidth / 2, 0, barWidth, 2, [25, 25, 25, 25]);
       visualizerContext.fill();
       // visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
       // // visualizerContext.fillStyle = "rgb(255, 255, 255)";
@@ -269,12 +267,12 @@ const Main = () => {
 
       let freqArr = new Uint8Array(analyser.frequencyBinCount);
 
-      setAudioUrl(audio);
+      // setAudioUrl(audio);
       setFreqArr(freqArr);
       setVisualizerContext(visualizerContext);
       setAnalyser(analyser);
       setAudioContext(audioContext);
-      // initDraw();
+      initDraw();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visualizerContext]);
@@ -345,6 +343,11 @@ const Main = () => {
       let audio = document.getElementById("audio");
       audio.play();
       onPlaying();
+      interval = setInterval(() => {
+        rotate += 0.001;
+      }, 1);
+    } else {
+      clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioUrl]);
