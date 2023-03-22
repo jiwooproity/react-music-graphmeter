@@ -58,8 +58,8 @@ MainStyle.VisualizerCanvas = styled.canvas`
     align
       ? css`
           top: 50%;
-          left: 50px;
-          transform: translateY(-50%);
+          left: 50%;
+          transform: translate(-50%, -50%);
         `
       : css`
           top: 50%;
@@ -87,7 +87,7 @@ MainStyle.AudioController = styled.audio`
 
   transform: translate(-50%, -50%);
 
-  z-index: 5;
+  z-index: 7;
 
   outline: none;
 
@@ -121,13 +121,13 @@ MainStyle.AlbumCover = styled.img`
 
   color: rgba(255, 255, 255, 0.8);
   border: rgba(255, 255, 255, 0.3) 0.1em solid;
-  border-radius: 0.25em;
+  border-radius: 50%;
 
   object-fit: cover;
 
   cursor: pointer;
 
-  z-index: 3;
+  z-index: 7;
 
   /* box-shadow: 0 0 1.1em rgba(255, 154, 96, 0.5); */
   opacity: 0.9;
@@ -142,7 +142,7 @@ MainStyle.YoutubeURLInput = styled.input`
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 7;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   padding: 0px 15px;

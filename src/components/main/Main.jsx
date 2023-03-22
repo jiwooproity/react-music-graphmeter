@@ -14,12 +14,16 @@ let g = 0;
 let b = 255;
 let a = 0;
 let x = 0;
+let rotate = 0;
+let defaultRadius = 1080;
 
 let WIDTH = 0;
 let HEIGHT = 0;
 
 const INTERVAL = 128; // 128, 256
 const SAMPLES = 4096; // 4096, 1024, 512, 2048
+
+let interval = null;
 
 const Main = () => {
   const visualizerRef = useRef();
@@ -40,48 +44,86 @@ const Main = () => {
   const [audioThumbail, setAudioThumbnail] = useState(albumCover);
 
   const initDraw = () => {
-    visualizerContext.clearRect(0, 0, WIDTH, HEIGHT);
-    visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
+    effectContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+    bigBars = 0;
     r = 80;
     g = 20;
     b = 220;
     a = 1;
     x = 0;
 
+    // visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
+    const barWidth = (WIDTH - 600) / INTERVAL - 2;
+    visualizerContext.clearRect(-WIDTH, -HEIGHT, WIDTH * 2, HEIGHT * 2);
+    // analyser.getByteFrequencyData(freqArr);
+
     for (let i = 0; i < INTERVAL; i++) {
-      r = r + 10;
+      let num = i;
+
+      if ((i >= 3 && i <= 7 && barHeight >= 205) || (i === 4 && barHeight >= 150)) {
+        bigBars++;
+      }
+
+      barHeight = (freqArr[num] - 128) * 2 + 2;
+
+      if (barHeight <= 1) {
+        barHeight = 2;
+      }
+
+      r = r + Math.floor(Math.random() * 10);
       if (r > 255) {
         r = 255;
       }
-      g = g + 1;
+
+      g = g + Math.floor(Math.random() * 1);
       if (g > 255) {
-        g = 255;
+        g = 0;
       }
-      b = b - 2;
+
+      b = b - Math.floor(Math.random() * 2);
       if (b < 0) {
-        b = 0;
+        b = 255;
       }
-      a = a - 0.005;
-      if (a < 0) {
-        a = 0;
-      }
+
+      // a = a - 0.005;
+      // if (a < 0) {
+      //   a = 0;
+      // }
 
       // 메인
-      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
-      visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
-      // visualizerContext.fillStyle = "rgb(255, 255, 255)";
-      visualizerContext.fillRect(x, HEIGHT / 2 - 2, WIDTH / INTERVAL - 1, 2);
-      visualizerContext2.fillRect(x, HEIGHT / 2 - 2, WIDTH / INTERVAL - 1, 2);
+      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + 0.7 + ")";
+      // reset and move to the center of our circle
+      visualizerContext.setTransform(1, 0, 0, 1, WIDTH / 2, HEIGHT / 2);
+      // rotate the context so we face the correct angle
+      visualizerContext.rotate(x + rotate);
+      // move along y axis to reach the inner radius
+      visualizerContext.translate(0, (defaultRadius - 430) / Math.PI);
+      // draw the bar
+      // visualizerContext.fillRect(
+      //   -barWidth / 2, // centered on x
+      //   0, // from the inner radius
+      //   barWidth,
+      //   barHeight,
+      //    // until its own height
+      // );
 
-      // 그림자
-      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
-      visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
-      // visualizerContext.fillStyle = "rgba(255, 255, 255, 0.1)";
-      visualizerContext.fillRect(x, HEIGHT / 2, WIDTH / INTERVAL - 1, 2);
-      visualizerContext2.fillRect(x, HEIGHT / 2, WIDTH / INTERVAL - 1, 2);
+      visualizerContext.beginPath();
+      visualizerContext.roundRect(-barWidth / 2, 0, barWidth, 2, [25, 25, 25, 25]);
+      visualizerContext.fill();
+      // visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
+      // // visualizerContext.fillStyle = "rgb(255, 255, 255)";
+      // visualizerContext.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
+      // visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
 
-      x = x + WIDTH / INTERVAL;
+      // // 그림자
+      // visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
+      // visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
+      // // visualizerContext.fillStyle = "rgba(255, 255, 255, 0.1)";
+      // visualizerContext.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+      // visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+
+      x += (Math.PI * 2) / INTERVAL;
     }
   };
 
@@ -89,6 +131,7 @@ const Main = () => {
     imageRef.current.style.width = "410px";
     imageRef.current.style.height = "410px";
     imageRef.current.style.opacity = "1";
+    defaultRadius = HEIGHT + 50;
 
     let gradient = effectContext.createRadialGradient(
       window.innerWidth / 2,
@@ -108,9 +151,6 @@ const Main = () => {
 
   const visualizerDraw = () => {
     effectContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    imageRef.current.style.width = "400px";
-    imageRef.current.style.height = "400px";
-    imageRef.current.style.opacity = "0.9";
 
     bigBars = 0;
     r = 80;
@@ -119,8 +159,9 @@ const Main = () => {
     a = 1;
     x = 0;
 
-    visualizerContext.clearRect(0, 0, WIDTH, HEIGHT);
-    visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
+    // visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
+    const barWidth = (WIDTH - 600) / INTERVAL - 2;
+    visualizerContext.clearRect(-WIDTH, -HEIGHT, WIDTH * 2, HEIGHT * 2);
     analyser.getByteFrequencyData(freqArr);
 
     for (let i = 0; i < INTERVAL; i++) {
@@ -136,44 +177,68 @@ const Main = () => {
         barHeight = 2;
       }
 
-      r = r + 10;
+      r = r + Math.floor(Math.random() * 10);
       if (r > 255) {
         r = 255;
       }
 
-      g = g + 1;
+      g = g + Math.floor(Math.random() * 1);
       if (g > 255) {
-        g = 255;
+        g = 0;
       }
 
-      b = b - 2;
+      b = b - Math.floor(Math.random() * 2);
       if (b < 0) {
-        b = 0;
+        b = 255;
       }
 
-      a = a - 0.005;
-      if (a < 0) {
-        a = 0;
-      }
+      // a = a - 0.005;
+      // if (a < 0) {
+      //   a = 0;
+      // }
 
       // 메인
-      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
-      visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
-      // visualizerContext.fillStyle = "rgb(255, 255, 255)";
-      visualizerContext.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
-      visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
+      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + 0.7 + ")";
+      // reset and move to the center of our circle
+      visualizerContext.setTransform(1, 0, 0, 1, WIDTH / 2, HEIGHT / 2);
+      // rotate the context so we face the correct angle
+      visualizerContext.rotate(x + rotate);
+      // move along y axis to reach the inner radius
+      visualizerContext.translate(0, (defaultRadius - 430) / Math.PI);
+      // draw the bar
+      // visualizerContext.fillRect(
+      //   -barWidth / 2, // centered on x
+      //   0, // from the inner radius
+      //   barWidth,
+      //   barHeight,
+      //    // until its own height
+      // );
 
-      // 그림자
-      visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
-      visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
-      // visualizerContext.fillStyle = "rgba(255, 255, 255, 0.1)";
-      visualizerContext.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
-      visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+      visualizerContext.beginPath();
+      visualizerContext.roundRect(-barWidth / 2, 0, barWidth, barHeight, [25, 25, 25, 25]);
+      visualizerContext.fill();
+      // visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", " + a + ")";
+      // // visualizerContext.fillStyle = "rgb(255, 255, 255)";
+      // visualizerContext.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
+      // visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2 - barHeight, WIDTH / INTERVAL - 2, barHeight);
 
-      x = x + WIDTH / INTERVAL;
+      // // 그림자
+      // visualizerContext.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
+      // visualizerContext2.fillStyle = "rgba(" + r + "," + g + "," + b + ", 0.2)";
+      // // visualizerContext.fillStyle = "rgba(255, 255, 255, 0.1)";
+      // visualizerContext.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+      // visualizerContext2.fillRect(WIDTH - x, HEIGHT / 2, WIDTH / INTERVAL - 2, barHeight);
+
+      x += (Math.PI * 2) / INTERVAL;
     }
 
     if (bigBars >= 1) effectDraw();
+    else {
+      imageRef.current.style.width = "400px";
+      imageRef.current.style.height = "400px";
+      imageRef.current.style.opacity = "0.9";
+      defaultRadius = HEIGHT;
+    }
 
     requestAnimationFrame(visualizerDraw);
   };
@@ -202,7 +267,7 @@ const Main = () => {
 
       let freqArr = new Uint8Array(analyser.frequencyBinCount);
 
-      setAudioUrl(audio);
+      // setAudioUrl(audio);
       setFreqArr(freqArr);
       setVisualizerContext(visualizerContext);
       setAnalyser(analyser);
@@ -215,13 +280,13 @@ const Main = () => {
   useEffect(() => {
     const visualizerCanvas = visualizerRef.current;
     const visualizerContext = visualizerCanvas.getContext("2d");
-    visualizerCanvas.width = 700;
-    visualizerCanvas.height = 600;
+    visualizerCanvas.width = 1920;
+    visualizerCanvas.height = 1080;
 
     const visualizerCanvas2 = visualizerRef2.current;
     const visualizerContext2 = visualizerCanvas2.getContext("2d");
-    visualizerCanvas2.width = 700;
-    visualizerCanvas2.height = 600;
+    visualizerCanvas2.width = 1000;
+    visualizerCanvas2.height = 1000;
 
     const effectCanvas = effectRef.current;
     const effectContext = effectCanvas.getContext("2d");
@@ -246,12 +311,12 @@ const Main = () => {
     };
 
     render.readAsDataURL(e.target.files[0]);
-    requestAnimationFrame(visualizerDraw);
+    // requestAnimationFrame(visualizerDraw);
   };
 
   const onPlaying = () => {
     audioContext.resume();
-    requestAnimationFrame(visualizerDraw);
+    visualizerDraw();
   };
 
   const onKeyDown = async ({ key, target }) => {
@@ -261,9 +326,9 @@ const Main = () => {
       let audio = document.getElementById("audio");
       audio.pause();
 
-      const { thumbnail } = await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/stream?url=${value}`).then((res) => res.json());
+      const { thumbnail } = await fetch(`http://localhost:8080/stream?url=${value}`).then((res) => res.json());
       setAudioThumbnail(thumbnail.url);
-      await fetch(`https://port-0-node-youtube-6g2llfgkex8r.sel3.cloudtype.app/play?url=${value}`)
+      await fetch(`http://localhost:8080/play?url=${value}`)
         .then((res) => res.blob())
         .then((data) => {
           var a = document.createElement("a");
@@ -274,10 +339,15 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if (audioUrl) {
+    if (!!audioUrl) {
       let audio = document.getElementById("audio");
       audio.play();
       onPlaying();
+      interval = setInterval(() => {
+        rotate += 0.001;
+      }, 1);
+    } else {
+      clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioUrl]);
