@@ -7,10 +7,10 @@ const Slider = forwardRef((props, forwardedRef) => {
   const { onChange } = props;
 
   return (
-    <CSS.AlbumSliderWrapper>
+    <CSS.AlbumSliderWrapper >
       <CSS.AudioInput type="file" id="fileUpload" onChange={onChange} hidden={true} />
       <label htmlFor="fileUpload">
-        <CSS.AlbumCover id="album" src={image} ref={forwardedRef} />
+        <CSS.AlbumCover id="album" src={image} ref={forwardedRef}/>
       </label>
     </CSS.AlbumSliderWrapper>
   );

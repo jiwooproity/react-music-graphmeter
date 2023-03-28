@@ -15,7 +15,7 @@ let b = 255;
 let a = 0;
 let x = 0;
 let rotate = 0;
-let defaultRadius = 1080;
+let defaultRadius = window.innerHeight;
 
 let WIDTH = 0;
 let HEIGHT = 0;
@@ -128,8 +128,8 @@ const Main = () => {
   };
 
   const effectDraw = () => {
-    imageRef.current.style.width = "410px";
-    imageRef.current.style.height = "410px";
+    imageRef.current.style.width = `${window.innerWidth / 6.6 + 10}px`;
+    imageRef.current.style.height = `${window.innerWidth / 6.6 + 10}px`;
     imageRef.current.style.opacity = "1";
     defaultRadius = HEIGHT + 50;
 
@@ -234,8 +234,8 @@ const Main = () => {
 
     if (bigBars >= 1) effectDraw();
     else {
-      imageRef.current.style.width = "400px";
-      imageRef.current.style.height = "400px";
+      imageRef.current.style.width = `${window.innerWidth / 6.6}px`;
+      imageRef.current.style.height = `${window.innerWidth / 6.6}px`;
       imageRef.current.style.opacity = "0.9";
       defaultRadius = HEIGHT;
     }
@@ -280,18 +280,21 @@ const Main = () => {
   useEffect(() => {
     const visualizerCanvas = visualizerRef.current;
     const visualizerContext = visualizerCanvas.getContext("2d");
-    visualizerCanvas.width = 1920;
-    visualizerCanvas.height = 1080;
+    visualizerCanvas.width = window.innerWidth;
+    visualizerCanvas.height = window.innerHeight;
 
     const visualizerCanvas2 = visualizerRef2.current;
     const visualizerContext2 = visualizerCanvas2.getContext("2d");
-    visualizerCanvas2.width = 1000;
-    visualizerCanvas2.height = 1000;
+    visualizerCanvas2.width = window.innerWidth;
+    visualizerCanvas2.height = window.innerHeight;
 
     const effectCanvas = effectRef.current;
     const effectContext = effectCanvas.getContext("2d");
     effectCanvas.width = window.innerWidth;
     effectCanvas.height = window.innerHeight;
+
+    imageRef.current.style.width = `${window.innerWidth / 6.6}px`;
+    imageRef.current.style.height = `${window.innerWidth / 6.6}px`;
 
     setVisualizerContext(visualizerContext);
     setVisualizerContext2(visualizerContext2);

@@ -5,7 +5,6 @@ const MainStyle = {};
 MainStyle.Container = styled.div`
   width: 100%;
   height: 100vh;
-  min-width: 1920px;
 
   padding: 0px 50px 0px 50px;
 
@@ -101,7 +100,6 @@ MainStyle.AudioController = styled.audio`
 `;
 
 MainStyle.AlbumSliderWrapper = styled.div`
-  width: 400px;
   height: 100%;
 
   position: relative;
@@ -109,7 +107,6 @@ MainStyle.AlbumSliderWrapper = styled.div`
 
 MainStyle.AlbumCover = styled.img`
   width: 100%;
-  height: 400px;
 
   display: block;
 
