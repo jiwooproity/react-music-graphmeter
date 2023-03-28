@@ -54,7 +54,7 @@ const Main = () => {
     x = 0;
 
     // visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
-    const barWidth = (WIDTH - 600) / INTERVAL - 2;
+    const barWidth = (WIDTH / 1.8) / INTERVAL - 2;
     visualizerContext.clearRect(-WIDTH, -HEIGHT, WIDTH * 2, HEIGHT * 2);
     // analyser.getByteFrequencyData(freqArr);
 
@@ -128,8 +128,8 @@ const Main = () => {
   };
 
   const effectDraw = () => {
-    imageRef.current.style.width = `${window.innerWidth / 6.6 + 10}px`;
-    imageRef.current.style.height = `${window.innerWidth / 6.6 + 10}px`;
+    imageRef.current.style.width = `${(defaultRadius - 430) / Math.PI * 1.9 + 10}px`;
+    imageRef.current.style.height = `${(defaultRadius - 430) / Math.PI * 1.9 + 10}px`;
     imageRef.current.style.opacity = "1";
     defaultRadius = HEIGHT + 50;
 
@@ -160,7 +160,7 @@ const Main = () => {
     x = 0;
 
     // visualizerContext2.clearRect(0, 0, WIDTH, HEIGHT);
-    const barWidth = (WIDTH - 600) / INTERVAL - 2;
+    const barWidth = (WIDTH / 1.8) / INTERVAL - 2;
     visualizerContext.clearRect(-WIDTH, -HEIGHT, WIDTH * 2, HEIGHT * 2);
     analyser.getByteFrequencyData(freqArr);
 
@@ -234,8 +234,8 @@ const Main = () => {
 
     if (bigBars >= 1) effectDraw();
     else {
-      imageRef.current.style.width = `${window.innerWidth / 6.6}px`;
-      imageRef.current.style.height = `${window.innerWidth / 6.6}px`;
+      imageRef.current.style.width = `${(defaultRadius - 430) / Math.PI * 1.9}px`;
+      imageRef.current.style.height = `${(defaultRadius - 430) / Math.PI * 1.9}px`;
       imageRef.current.style.opacity = "0.9";
       defaultRadius = HEIGHT;
     }
@@ -293,8 +293,8 @@ const Main = () => {
     effectCanvas.width = window.innerWidth;
     effectCanvas.height = window.innerHeight;
 
-    imageRef.current.style.width = `${window.innerWidth / 6.6}px`;
-    imageRef.current.style.height = `${window.innerWidth / 6.6}px`;
+    imageRef.current.style.width = `${(defaultRadius - 430) / Math.PI * 1.9}px`;
+    imageRef.current.style.height = `${(defaultRadius - 430) / Math.PI * 1.9}px`;
 
     setVisualizerContext(visualizerContext);
     setVisualizerContext2(visualizerContext2);
